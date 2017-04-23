@@ -4,7 +4,7 @@ The T3AI can be easily implemented in any java application. The GameHandler.java
 program to give an idea on how it works. Check out the Output.txt file to know the input formats.
 
 To know more about this java application, you can check out :
-http://www.sudocoding.xyz/tic-tac-toe-ai-with-probabilistic-reasoning
+http://sudocoding.xyz/tic-tac-toe-ai-probabilistic-reasoning/
 
 Avaliable public methods:
 <ul>
