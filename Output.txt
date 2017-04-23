@@ -1,0 +1,54 @@
+Welcome to T3AI Tic Tac Toe Game
+Would you like to go first(y/n)? : n
+Select your char(o/x)? : o
+CPU moved: 0, 1
+  | x |  
+-- --- --
+  |   |  
+-- --- --
+  |   |  
+
+Player's move: 2 2
+  | x |  
+-- --- --
+  |   |  
+-- --- --
+  |   | o
+
+CPU moved: 0, 2
+  | x | x
+-- --- --
+  |   |  
+-- --- --
+  |   | o
+
+Player's move: 0 0
+o | x | x
+-- --- --
+  |   |  
+-- --- --
+  |   | o
+
+CPU moved: 1, 1
+o | x | x
+-- --- --
+  | x |  
+-- --- --
+  |   | o
+
+Player's move: 2 1
+o | x | x
+-- --- --
+  | x |  
+-- --- --
+  | o | o
+
+CPU moved: 2, 0
+o | x | x
+-- --- --
+  | x |  
+-- --- --
+x | o | o
+
+Winner x
+Play again (1/0)? : 
