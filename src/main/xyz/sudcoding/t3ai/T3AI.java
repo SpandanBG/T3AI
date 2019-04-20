@@ -1,4 +1,4 @@
-package TicTacToe;
+package xyz.sudcoding.t3ai;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ import java.util.Random;
  * */
 public class T3AI {
 	// Game Variables
-	private char gameBoard[][] = new char[9][9];	// To keep track of the game state
+	private char[][] gameBoard = new char[9][9];    // To keep track of the game state
 	private int turn;								// To keep track of the number of turns
 	private char cpu, player, victor;				// CPU, Player and Victor's chars
 	private boolean cpuTurn;						// Keep track if the current game is to be played by the CPU
@@ -52,7 +52,7 @@ public class T3AI {
 	 * Condition inside the while loop
 	 * @return boolean -> If current game state has more moves left
 	 * */
-	public boolean playing(){
+	boolean playing(){
 		return hasMoves() && matched()==' ';
 	}
 
@@ -65,9 +65,9 @@ public class T3AI {
 	 * @param isPlayer -> True if the player is giving it's move
 	 * @throws T3AIException
 	 * */
-	public void markMove(int i, int j, boolean isPlayer) throws T3AIException{
+	void markMove(int i, int j, boolean isPlayer) throws T3AIException{
 		
-		if((cpuTurn==true && isPlayer==true) || (cpuTurn==false && isPlayer==false)){
+		if((cpuTurn && isPlayer) || (!cpuTurn && !isPlayer)){
 			throw new T3AIException("Invalid Player");
 		}
 		if((i*3+j)<0 || (i*3+j)>8){
@@ -76,7 +76,7 @@ public class T3AI {
 		if(gameBoard[i][j]!=' '){
 			throw new T3AIException("Preoccupied Location Coordinate");
 		}
-		if(hasMoves()==false){
+		if(!hasMoves()){
 			throw new T3AIException("No Moves Left");
 		}
 		gameBoard[i][j] = (isPlayer)?player:cpu;
@@ -89,7 +89,7 @@ public class T3AI {
 	 * It sends a ' ', if it was draw
 	 * @return victor -> char of the winner
 	 * */
-	public char getVictor(){
+	char getVictor(){
 		return victor=matched();
 	}
 	
@@ -98,7 +98,7 @@ public class T3AI {
 	 * As an 2D array of char
 	 * @return gameBoard -> The state of the game as a char[][]
 	 * */
-	public char[][] getGameState(){
+	char[][] getGameState(){
 		return gameBoard;
 	}
 
@@ -108,20 +108,20 @@ public class T3AI {
 	 * @return move[] -> i, j coordinates of the move
 	 * @throws T3AIException if no moves can be given (Err ID: 5)
 	 * */
-	public int[] animateCPU() throws T3AIException {
+	int[] animateCPU() throws T3AIException {
 		if(hasMoves() && getVictor()==' '){					// Checks if any more moves are left
-			int moveSet[] = new int[2];
+			int[] moveSet = new int[2];
 			if(turn==0){		// Generates a random move in the beginning
 				int i = rand.nextInt(8);
 				moveSet[0]=i/3; moveSet[1]=i-moveSet[0]*3;
 				try{
 					markMove(moveSet[0],moveSet[1],false);
-				} catch(T3AIException e){}
+				} catch(T3AIException ignored){}
 			} else {			// Compute the best move
 				moveSet = findBestMove();
 				try{
 					markMove(moveSet[0],moveSet[1],false);
-				} catch(T3AIException e){}
+				} catch(T3AIException ignored){}
 			}
 			return moveSet;
 		} else {
@@ -133,7 +133,7 @@ public class T3AI {
 	 * This method returns true if the current round is for the player to play
 	 * @returns boolean -> true if it's player's turn to play
 	 * */
-	public boolean isPlayerTurn(){
+	boolean isPlayerTurn(){
 		return !cpuTurn;
 	}
 	
@@ -191,15 +191,16 @@ public class T3AI {
 	 * @return moveSet -> i,j coordinates in an array of the move to be played by the CPU
 	 * */
 	private int[] findBestMove(){
-		int ms_pov[] = new int[2], ms_pol[] = new int[2];		// Arrays to store the coordinates of highestPOV and leastPOL, respectively
-		int obtain[] = new int[3];				// Array to store the NOL, NOG and NOV data given by cpuBrain(), respectively;
+		int[] ms_pov = new int[2];        // Arrays to store the coordinates of highestPOV and leastPOL, respectively
+		int[] ms_pol = new int[2];
+		int[] obtain = new int[3];				// Array to store the NOL, NOG and NOV data given by cpuBrain(), respectively;
 		float leastPOL=999999;					// Least probability of defeat
 		float highestPOV=-999999;				// Highest probability of victory
 		float POLcV=-999999, POVcL=999999;		// The POV and POL counter parts of leastPOL and highestPOV, respectively
 		float gotPOL, gotPOV;					// Obtained probability of defeat, victory and defeat from new set of data
 		ms_pov[0]=ms_pov[1]=ms_pol[0]=ms_pol[1]=1;
-		
-		int counterMove[] = performCounter(cpu,player);	// Check for possible victory
+
+		int[] counterMove = performCounter(cpu, player);	// Check for possible victory
 		if(counterMove[2]!=0){								// Non zero victory moves
 			ms_pov[0]=counterMove[0]; ms_pov[1]=counterMove[1];
 			return ms_pov;
@@ -212,12 +213,12 @@ public class T3AI {
 		}
 		
 		// Checking for possible forking move for CPU
-		int place[] = forkCheck(cpu,player);
+		int[] place = forkCheck(cpu, player);
 		if(place[2]==1){
 			ms_pov[0]=place[0];ms_pov[1]=place[1];
 			return ms_pov;
 		}
-		
+
 		for(int i=0; i<3; i++){
 			for(int j=0; j<3; j++){
 				if(gameBoard[i][j]==' '){
@@ -271,9 +272,9 @@ public class T3AI {
 	 * @return obtain[] -> an integer array containing the NOL and NOG 
 	 * */
 	private int[] cpuBrain(boolean isCPU){
-		int cost[] = new int[3];		// NOL, NOG and NOV respectively
+        int[] cost = new int[3];		// NOL, NOG and NOV respectively
 		cost[0]=cost[1]=cost[2]=0;
-		
+
 		// Check for possible victory
 		victor = matched();
 		if(victor==player){				// If the player wins in the given game state, it's marked as defeat 
@@ -319,10 +320,10 @@ public class T3AI {
 	 * @returns cost[] -> Total cost obtained
 	 * */
 	private int[] virtualPlayer(char forC, char againstC, boolean flag){
-		int cost[] = new int[3],
-			obtain[] = new int[3],
-			res[] = new int[3];		// i, j coordinates and, number of counters, respectively
-		int posi, posj;
+        int[] cost = new int[3];        // i, j coordinates and, number of counters, respectively
+        int[] obtain = new int[3];
+        int[] res = new int[3];
+        int posi, posj;
 		cost[0]=0; cost[1]=0; cost[2]=0;
 		
 		// Checking for possible victory moves
@@ -451,7 +452,7 @@ public class T3AI {
 	 * @return place[] -> 0,1->i,j and 2->"if fork is possible"=1, "else"=0
 	 * */
 	private int[] forkCheck(char forC, char againstC){
-		int place[]= new int[3];
+        int[] place = new int[3];
 		place[0]=place[1]=place[2]=0;
 		for(int i=0; i<3; i++){
 			for(int j=0; j<3; j++){
@@ -497,7 +498,7 @@ public class T3AI {
 class T3AIException extends Exception{
 	private static final long serialVersionUID = 1L;
 	private int errTag;
-	public T3AIException (String msg){
+	T3AIException(String msg){
 		super(msg);
 		switch(msg){
 		case "Invalid Character Input: Enter either 'x' OR 'o'": 
@@ -522,7 +523,7 @@ class T3AIException extends Exception{
 	 * @see 3 -> Preoccupied Location Coordinate
 	 * @see 4 -> Invalid Location Coordinate
 	 * */
-	public int getErrorTag(){
+    int getErrorTag(){
 		return errTag;
 	}
 }
