@@ -1,4 +1,4 @@
-package xyz.sudcoding.t3ai.old;
+package xyz.sudocoding.t3ai.old;
 
 /**
  * This is an Exception class to handle special Exceptions of the T3AI

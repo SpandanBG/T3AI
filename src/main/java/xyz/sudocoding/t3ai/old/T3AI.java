@@ -1,4 +1,4 @@
-package xyz.sudcoding.t3ai.old;
+package xyz.sudocoding.t3ai.old;
 
 import java.util.Random;
 

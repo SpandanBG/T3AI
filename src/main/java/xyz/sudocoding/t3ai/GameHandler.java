@@ -1,7 +1,7 @@
-package xyz.sudcoding.t3ai;
+package xyz.sudocoding.t3ai;
 
-import xyz.sudcoding.t3ai.old.T3AI;
-import xyz.sudcoding.t3ai.old.T3AIException;
+import xyz.sudocoding.t3ai.old.T3AI;
+import xyz.sudocoding.t3ai.old.T3AIException;
 
 import static java.lang.System.out;
 import java.util.Scanner;
