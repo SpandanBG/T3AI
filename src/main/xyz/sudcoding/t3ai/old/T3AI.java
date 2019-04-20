@@ -1,4 +1,4 @@
-package xyz.sudcoding.t3ai;
+package xyz.sudcoding.t3ai.old;
 
 import java.util.Random;
 
@@ -52,7 +52,7 @@ public class T3AI {
 	 * Condition inside the while loop
 	 * @return boolean -> If current game state has more moves left
 	 * */
-	boolean playing(){
+    public boolean playing(){
 		return hasMoves() && matched()==' ';
 	}
 
@@ -65,7 +65,7 @@ public class T3AI {
 	 * @param isPlayer -> True if the player is giving it's move
 	 * @throws T3AIException
 	 * */
-	void markMove(int i, int j, boolean isPlayer) throws T3AIException{
+    public void markMove(int i, int j, boolean isPlayer) throws T3AIException{
 		
 		if((cpuTurn && isPlayer) || (!cpuTurn && !isPlayer)){
 			throw new T3AIException("Invalid Player");
@@ -89,7 +89,7 @@ public class T3AI {
 	 * It sends a ' ', if it was draw
 	 * @return victor -> char of the winner
 	 * */
-	char getVictor(){
+    public char getVictor(){
 		return victor=matched();
 	}
 	
@@ -98,7 +98,7 @@ public class T3AI {
 	 * As an 2D array of char
 	 * @return gameBoard -> The state of the game as a char[][]
 	 * */
-	char[][] getGameState(){
+    public char[][] getGameState(){
 		return gameBoard;
 	}
 
@@ -108,7 +108,7 @@ public class T3AI {
 	 * @return move[] -> i, j coordinates of the move
 	 * @throws T3AIException if no moves can be given (Err ID: 5)
 	 * */
-	int[] animateCPU() throws T3AIException {
+    public int[] animateCPU() throws T3AIException {
 		if(hasMoves() && getVictor()==' '){					// Checks if any more moves are left
 			int[] moveSet = new int[2];
 			if(turn==0){		// Generates a random move in the beginning
@@ -133,7 +133,7 @@ public class T3AI {
 	 * This method returns true if the current round is for the player to play
 	 * @returns boolean -> true if it's player's turn to play
 	 * */
-	boolean isPlayerTurn(){
+    public boolean isPlayerTurn(){
 		return !cpuTurn;
 	}
 	
@@ -492,38 +492,3 @@ public class T3AI {
 	}
 }
 
-/**
- * This is an Exception class to handle special Exceptions of the T3AI
- * */
-class T3AIException extends Exception{
-	private static final long serialVersionUID = 1L;
-	private int errTag;
-	T3AIException(String msg){
-		super(msg);
-		switch(msg){
-		case "Invalid Character Input: Enter either 'x' OR 'o'": 
-			errTag=1; break;
-		case "Invalid Player": 
-			errTag=2; break;
-		case "Preoccupied Location Coordinate": 
-			errTag=3; break;
-		case "Invalid Location Coordinate": 
-			errTag=4; break;
-		case "No Moves Left": 
-			errTag=5; break;
-		default: 
-			errTag=0; break;
-		}
-	}
-	/**
-	 * This method returns the error tag
-	 * List of error tags:
-	 * @see 1 -> Invalid Character Input: Enter either 'x' OR 'o'
-	 * @see 2 -> Invalid Player
-	 * @see 3 -> Preoccupied Location Coordinate
-	 * @see 4 -> Invalid Location Coordinate
-	 * */
-    int getErrorTag(){
-		return errTag;
-	}
-}
